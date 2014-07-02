@@ -1,5 +1,6 @@
 // you should run this script by:
 // `node --harmony --use-strict block.js
+// if you want to use `let` block scope, you should run node with `--use-strict`
 const assert = require('assert');
 
 var value = 'hello let';
@@ -63,3 +64,9 @@ function cloes5 () {
 }
 var func2 = cloes5()[1];
 assert(func2(), 4);
+
+const cantBeModified = 1;
+// if 
+// `cantBeModified = 2;`
+// will
+// SyntaxError: Assignment to constant variable.
