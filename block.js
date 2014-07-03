@@ -25,7 +25,7 @@ function fibonacci (n) {
   
   return cur;
 }
-assert.equal(fibonacci(7), 21);
+assert.equal(fibonacci(7), 21); // start with 0
 
 // nested loop
 function count (n) {

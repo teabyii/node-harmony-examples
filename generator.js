@@ -7,9 +7,10 @@ function *fibonacciIterator () {
       tmp;
 
   while (true) {
+    yield cur;
     tmp = prev;
     prev = cur;
-    yield cur = tmp + prev;
+    cur = tmp + prev;
   }
 }
 
@@ -17,12 +18,14 @@ var fibonacci = fibonacciIterator();
 
 // you can use `next().value` to get more in fibonacci seq
 assert.equal(fibonacci.next().value, 1); 
-assert.equal(fibonacci.next().value, 2);
+assert.equal(fibonacci.next().value, 1);
 
 // more powerful is using in control flow
 // more detail see: 
 // https://github.com/visionmedia/co
 // https://github.com/jmar777/suspend
+// http://taskjs.org
+// https://github.com/creationix/gen-run
 function async (makeGen) {
   var gen = makeGen.apply(this, arguments);
   
@@ -60,6 +63,7 @@ function asyncData () {
   };
 }
 
+// so you can write asynchronous javascript in a sequential style, so lovely
 async(function * () {
   var a = yield asyncData();
   var b = yield asyncData();
@@ -68,3 +72,20 @@ async(function * () {
   assert.equal(b.count, 2);
 });
 
+// delegated yield 
+var delegatedIterator = (function *() {
+  yield 2;
+  yield 3;
+})();
+
+var delegatingIterator = (function *() {
+  yield 1;
+  yield* delegatedIterator;
+  yield 4;
+})();
+
+var icount = 0;
+// var value of generator
+for (var value of delegatingIterator) {
+  assert.equal(++icount, value);
+}
