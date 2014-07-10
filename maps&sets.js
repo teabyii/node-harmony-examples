@@ -33,3 +33,35 @@ list.forEach(function (item) {
 assert.equal(set.size, 4);
 
 // set iteration is not yet supported
+
+// WeakMap
+// In native WeakMaps, references to key objects are held 'weakly'
+// Means that if no other reference to the object, will not prevent garbage collection
+// WeakMap keys are not enumerable
+var weak = new WeakMap();
+
+// the key-value pair will be gc immediately
+weak.set({}, 'noop');
+var empty = {}, node = { node: 'harmony' }, exchange;
+
+weak.set(empty, 'hello');
+assert.equal(weak.get(empty), 'hello');
+
+exchange = empty;
+empty = null;
+assert.equal(weak.get(exchange), 'hello');
+
+exchange = null;
+assert.equal(weak.get({}), undefined);
+
+weak.set(node, undefined);
+assert.equal(weak.has(node), true);
+
+weak.delete(node);
+assert.equal(weak.get(node), undefined);
+
+
+
+
+
+
